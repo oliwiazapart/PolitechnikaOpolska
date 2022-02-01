@@ -1,0 +1,22 @@
+﻿  main.cpp
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(74,34): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(106,34): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(117,49): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(117,30): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(116,40): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(119,44): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(119,29): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(118,39): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(126,48): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(126,29): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(125,39): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(128,42): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(128,28): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(127,48): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(134,48): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(134,29): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(133,39): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(136,42): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(136,28): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\zegar3d\main.cpp(135,48): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+  zegar3d.vcxproj -> C:\Users\oliwia\Desktop\opengl\zegar3d\zegar3d\Debug\zegar3d.exe

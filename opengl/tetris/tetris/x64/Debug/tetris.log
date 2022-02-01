@@ -1,0 +1,8 @@
+﻿  Source.cpp
+C:\Users\oliwia\Desktop\opengl\tetris\tetris\Source.cpp(59,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\oliwia\Desktop\opengl\tetris\tetris\Source.cpp(176,24): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\oliwia\Desktop\opengl\tetris\tetris\Source.cpp(181,23): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\oliwia\Desktop\opengl\tetris\tetris\Source.cpp(192,28): warning C4244: '=': conversion from 'ULONGLONG' to 'DWORD', possible loss of data
+C:\Users\oliwia\Desktop\opengl\tetris\tetris\Source.cpp(301,24): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\oliwia\Desktop\opengl\tetris\tetris\Source.cpp(442,12): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+  tetris.vcxproj -> C:\Users\oliwia\Desktop\opengl\tetris\x64\Debug\tetris.exe

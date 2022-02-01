@@ -1,0 +1,806 @@
+-- *******************************************************************************
+-- *                                                                     
+-- *   GRUPA LABORATORYJNA: 8		               
+-- *                                 
+-- *******************************************************************************
+-- * 																		     
+-- *   Nazwisko i imię: Zapart Oliwia                                                          
+-- * 																		     
+-- *******************************************************************************
+-- * 																		     
+-- *   Nr indeksu: 99517                                                              
+-- * 																		     
+-- *******************************************************************************
+-- * 																		     
+-- *   Temat projektu: Schronisko dla zwierząt                                                            
+-- * 																		     
+-- *******************************************************************************
+
+-- PROSZĘ NIE UŻYWAĆ W SKRYPTACH ALIASÓW DLA SCHEMATÓW BAZ
+
+
+-- -------------------------------------------------------------------------------
+-- TWORZENIE STRUKTURY BAZY DANYCH  
+-- [PAMIĘTAĆ O KLUCZACH OBCYCH]                                          
+-- -------------------------------------------------------------------------------
+
+USE [Schronisko]
+GO
+
+CREATE TABLE [delivery] (
+    [DeliveryId] NUMERIC(10) NOT NULL,
+    [AnimalId] NUMERIC(10) NOT NULL,
+    [DateOfAdmission] DATE NOT NULL,
+    [EmployeeId] NUMERIC(10) NOT NULL,
+    CONSTRAINT [PK_delivery] PRIMARY KEY ([DeliveryId])
+)
+GO
+
+
+CREATE TABLE [client] (
+    [ClientId] NUMERIC(10) NOT NULL,
+    [FirstName] VARCHAR(50) NOT NULL,
+    [LastName] VARCHAR(50) NOT NULL,
+    [EmailAddress] VARCHAR(50) NOT NULL,
+    [Address] VARCHAR(100) NOT NULL,
+    [Type] VARCHAR(10) NOT NULL,
+    CONSTRAINT [PK_client] PRIMARY KEY ([ClientId])
+)
+GO
+
+
+
+CREATE TABLE [stock] (
+    [StockId] NUMERIC(10) NOT NULL,
+    [SupplierId] NUMERIC(10) NOT NULL,
+    [EmployeeId] NUMERIC(10) NOT NULL,
+    [DateOfAdmission] DATE NOT NULL,
+    CONSTRAINT [PK_stock] PRIMARY KEY ([StockId])
+)
+GO
+
+
+
+CREATE TABLE [suppliers] (
+    [SupplierId] NUMERIC(10) NOT NULL,
+    [PhoneNumber] NUMERIC NOT NULL,
+    [EmailAddress] VARCHAR(50),
+    [StockId] NUMERIC(10),
+    CONSTRAINT [PK_suppliers] PRIMARY KEY ([SupplierId])
+)
+GO
+
+
+
+CREATE TABLE [delivery_client] (
+    [DeliveryId] NUMERIC(10) NOT NULL,
+    [ClientId] NUMERIC(10) NOT NULL,
+    CONSTRAINT [PK_delivery_client] PRIMARY KEY ([DeliveryId], [ClientId])
+)
+GO
+
+
+
+
+
+CREATE TABLE [adoption] (
+    [AdoptionId] NUMERIC(10) NOT NULL,
+    [StartDate] DATE NOT NULL,
+    [EndDate] DATE,
+    [EmployeeId] NUMERIC(10) NOT NULL,
+    [AnimalId] NUMERIC(10) NOT NULL,
+    [Payment] BIT NOT NULL,
+    [ClientId] NUMERIC(10) NOT NULL,
+    CONSTRAINT [PK_adoption] PRIMARY KEY ([AdoptionId])
+)
+GO
+
+
+
+
+
+CREATE TABLE [employee] (
+    [EmployeeId] NUMERIC(10) NOT NULL,
+    [FirstName] VARCHAR(50) NOT NULL,
+    [LastName] VARCHAR(50) NOT NULL,
+    [PhoneNumber] NUMERIC(12) NOT NULL,
+    [Address] VARCHAR(100) NOT NULL,
+    [AdoptionId] NUMERIC(10),
+    [DeliveryId] NUMERIC(10),
+    CONSTRAINT [PK_employee] PRIMARY KEY ([EmployeeId])
+)
+GO
+
+
+
+
+CREATE TABLE [employee_history] (
+    [StartDate] DATE NOT NULL,
+    [EndDate] DATE,
+    [Job] VARCHAR(50) NOT NULL,
+    [Salary] NUMERIC(5) NOT NULL,
+    [WorkHours] NUMERIC(2),
+    [EmployeeId] NUMERIC(10)
+)
+GO
+
+
+
+
+CREATE TABLE [animal] (
+    [AnimalId] NUMERIC(10) NOT NULL,
+    [Race] VARCHAR(50) NOT NULL,
+    [DateOfAdmission] DATE NOT NULL,
+    [Sex] VARCHAR(8) NOT NULL,
+    [Name] VARCHAR(50),
+    [Age] NUMERIC(3),
+    [AdoptionId] NUMERIC(10),
+    [DeliveryId] NUMERIC(10),
+    CONSTRAINT [PK_animal] PRIMARY KEY ([AnimalId])
+)
+GO
+
+
+CREATE TABLE [employee_stock] (
+    [EmployeeId] NUMERIC(10) NOT NULL,
+    [StockId] NUMERIC(10) NOT NULL,
+    CONSTRAINT [PK_employee_stock] PRIMARY KEY ([EmployeeId], [StockId])
+)
+GO
+
+
+
+CREATE TABLE [cage] (
+    [CageId] NUMERIC(10) NOT NULL,
+    [BuildingId] NUMERIC(10) NOT NULL,
+    [CageCode] NUMERIC(10) NOT NULL,
+    [StartDate] DATE,
+    [EndDate] DATE,
+    [AnimalID] NUMERIC(10),
+    CONSTRAINT [PK_cage] PRIMARY KEY ([CageId])
+)
+GO
+
+
+ALTER TABLE [cage] ADD CONSTRAINT [animal_cage] 
+    FOREIGN KEY ([AnimalID]) REFERENCES [animal] ([AnimalId])
+GO
+
+
+ALTER TABLE [adoption] ADD CONSTRAINT [client_adoption] 
+    FOREIGN KEY ([ClientId]) REFERENCES [client] ([ClientId])
+GO
+
+
+ALTER TABLE [employee] ADD CONSTRAINT [adoption_employee] 
+    FOREIGN KEY ([AdoptionId]) REFERENCES [adoption] ([AdoptionId])
+GO
+
+
+ALTER TABLE [employee] ADD CONSTRAINT [delivery_employee] 
+    FOREIGN KEY ([DeliveryId]) REFERENCES [delivery] ([DeliveryId])
+GO
+
+
+ALTER TABLE [employee_history] ADD CONSTRAINT [employee_employee_history] 
+    FOREIGN KEY ([EmployeeId]) REFERENCES [employee] ([EmployeeId])
+GO
+
+
+ALTER TABLE [suppliers] ADD CONSTRAINT [stock_suppliers] 
+    FOREIGN KEY ([StockId]) REFERENCES [stock] ([StockId])
+GO
+
+
+ALTER TABLE [animal] ADD CONSTRAINT [adoption_animal] 
+    FOREIGN KEY ([AdoptionId]) REFERENCES [adoption] ([AdoptionId])
+GO
+
+
+ALTER TABLE [animal] ADD CONSTRAINT [delivery_animal] 
+    FOREIGN KEY ([DeliveryId]) REFERENCES [delivery] ([DeliveryId])
+GO
+
+
+ALTER TABLE [employee_stock] ADD CONSTRAINT [employee_employee_stock] 
+    FOREIGN KEY ([EmployeeId]) REFERENCES [employee] ([EmployeeId])
+GO
+
+
+ALTER TABLE [employee_stock] ADD CONSTRAINT [stock_employee_stock] 
+    FOREIGN KEY ([StockId]) REFERENCES [stock] ([StockId])
+GO
+
+
+ALTER TABLE [delivery_client] ADD CONSTRAINT [delivery_delivery_client] 
+    FOREIGN KEY ([DeliveryId]) REFERENCES [delivery] ([DeliveryId])
+GO
+
+
+ALTER TABLE [delivery_client] ADD CONSTRAINT [client_delivery_client] 
+    FOREIGN KEY ([ClientId]) REFERENCES [client] ([ClientId])
+GO
+
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   5 X INSERT  DO WSZYSTKICH TABEL                                               
+-- -------------------------------------------------------------------------------
+
+
+INSERT dbo.client (ClientId, FirstName, LastName, EmailAddress, Address, Type)
+VALUES ('1', 'Jan', 'Kowalski', 'jankowalski@epoczta.pl', 'Morska nr 14, Kraków', 'adopcja')
+GO
+
+INSERT dbo.client (ClientId, FirstName, LastName, EmailAddress, Address, Type)
+VALUES ('2', 'Ola', 'Nowak', 'olanowak@epoczta.pl', 'Zielona nr 9, Kraków', 'adopcja')
+GO
+
+INSERT dbo.client (ClientId, FirstName, LastName, EmailAddress, Address, Type)
+VALUES ('3', 'Kuba', 'Kowalczyk', 'kubakowalczyk@epoczta.pl', 'Fioletowa nr 18, Kraków', 'dostawa')
+GO
+
+INSERT dbo.client (ClientId, FirstName, LastName, EmailAddress, Address, Type)
+VALUES ('4', 'Monika', 'Wiśniewska', 'monikawisniewska@epoczta.pl', 'Kolorowa nr 12, Kraków', 'dostawa')
+GO
+
+INSERT dbo.client (ClientId, FirstName, LastName, EmailAddress, Address, Type)
+VALUES ('5', 'Andrzej', 'Kamiński', 'andrzejkaminski@epoczta.pl', 'Czerwona nr 10, Kraków', 'dostawa')
+GO
+
+
+
+INSERT dbo.adoption (AdoptionId, StartDate, EndDate, EmployeeId, AnimalId, Payment, ClientId)
+VALUES ('1', CONVERT(datetime, '2020-10-10',102), CONVERT(datetime, '2020-10-20',102), '1', '1', '1', '1')
+GO
+
+INSERT dbo.adoption (AdoptionId, StartDate, EndDate, EmployeeId, AnimalId, Payment, ClientId)
+VALUES ('2', CONVERT(datetime, '2020-11-22',102), CONVERT(datetime, '2020-11-30',102), '5','2', '1', '2')
+GO
+
+INSERT dbo.adoption (AdoptionId, StartDate, EndDate, EmployeeId, AnimalId, Payment, ClientId)
+VALUES ('3', CONVERT(datetime, '2020-06-01',102), CONVERT(datetime, '2020-06-10',102), '2','3','1', '1')
+GO
+
+INSERT dbo.adoption (AdoptionId, StartDate, EndDate, EmployeeId, AnimalId, Payment, ClientId)
+VALUES ('4', CONVERT(datetime, '2020-12-12',102), CONVERT(datetime, '2020-12-22',102), '3', '4', '1', '2')
+GO
+
+INSERT dbo.adoption (AdoptionId, StartDate, EndDate, EmployeeId, AnimalId, Payment, ClientId)
+VALUES ('5', CONVERT(datetime, '2020-09-16',102), CONVERT(datetime, '2020-09-26',102), '4', '5', '1', '1')
+GO
+
+
+
+INSERT dbo.delivery (DeliveryId, AnimalId, DateOfAdmission, EmployeeId) 
+VALUES ('1', '1', CONVERT(datetime, '2019-11-16',102), '1')
+GO
+
+INSERT dbo.delivery (DeliveryId, AnimalId, DateOfAdmission, EmployeeId) 
+VALUES ('2', '2', CONVERT(datetime, '2019-05-12',102), '2');
+GO
+
+INSERT dbo.delivery (DeliveryId, AnimalId, DateOfAdmission, EmployeeId) 
+VALUES ('3', '3', CONVERT(datetime, '2019-12-02',102), '2')
+GO
+
+INSERT dbo.delivery (DeliveryId, AnimalId, DateOfAdmission, EmployeeId) 
+VALUES ('4', '4', CONVERT(datetime, '2019-03-24',102), '3')
+GO
+
+INSERT dbo.delivery (DeliveryId, AnimalId, DateOfAdmission, EmployeeId)  
+VALUES ('5', '5', CONVERT(datetime, '2019-01-30',102), '4')
+GO
+
+
+
+INSERT dbo.delivery_client(DeliveryId, ClientId)
+VALUES ('1', '3')
+GO
+
+INSERT dbo.delivery_client(DeliveryId, ClientId)
+VALUES ('2', '4')
+GO
+
+INSERT dbo.delivery_client(DeliveryId, ClientId)
+VALUES ('3', '5')
+GO
+
+INSERT dbo.delivery_client(DeliveryId, ClientId)
+VALUES ('4', '4')
+GO
+
+INSERT dbo.delivery_client(DeliveryId, ClientId)
+VALUES ('5', '3')
+GO
+
+
+
+INSERT dbo.animal (AnimalId, Race, DateOfAdmission, Sex, Name, Age, AdoptionId, DeliveryId)
+VALUES ('1', 'pies', CONVERT(datetime, '2019-11-16',102), 'samiec', 'Azor', '2', '1', '1')
+GO
+
+INSERT dbo.animal (AnimalId, Race, DateOfAdmission, Sex, Name, Age, AdoptionId, DeliveryId)
+VALUES ('2', 'kot', CONVERT(datetime, '2019-05-12',102), 'samica', 'Fifi', '1', '2', '2')
+GO
+
+INSERT dbo.animal (AnimalId, Race, DateOfAdmission, Sex, Name, Age, AdoptionId, DeliveryId)
+VALUES ('3', 'pies', CONVERT(datetime, '2019-12-02',102), 'samiec', 'Pulpet', '2', '3', '3')
+GO
+
+INSERT dbo.animal (AnimalId, Race, DateOfAdmission, Sex, Name, Age, AdoptionId, DeliveryId)
+VALUES ('4', 'kot', CONVERT(datetime, '2019-03-24',102), 'samiec', 'Aslan', '3', '4', '4')
+GO
+
+INSERT dbo.animal (AnimalId, Race, DateOfAdmission, Sex, Name, Age, AdoptionId, DeliveryId)
+VALUES ('5', 'pies', CONVERT(datetime, '2019-01-30',102), 'samica', 'Lola', '4', '5', '5')
+GO
+
+
+
+INSERT dbo.cage (CageId, BuildingId, CageCode, StartDate, EndDate, AnimalId)
+VALUES ('1', '1', '001', CONVERT(datetime, '2019-11-16',102), CONVERT(datetime, '2020-10-20',102), '1')
+GO
+
+INSERT dbo.cage (CageId, BuildingId, CageCode, StartDate, EndDate, AnimalId)
+VALUES ('2', '2', '101', CONVERT(datetime, '2019-05-12',102), CONVERT(datetime, '2020-11-30',102), '2')
+GO
+
+INSERT dbo.cage (CageId, BuildingId, CageCode, StartDate, EndDate, AnimalId)
+VALUES ('3', '1', '002', CONVERT(datetime, '2019-12-02',102), CONVERT(datetime, '2020-06-10',102), '3')
+GO
+
+INSERT dbo.cage (CageId, BuildingId, CageCode, StartDate, EndDate, AnimalId)
+VALUES ('4', '2', '102', CONVERT(datetime, '2019-03-24',102), CONVERT(datetime, '2020-12-22',102), '4')
+GO
+
+INSERT dbo.cage (CageId, BuildingId, CageCode, StartDate, EndDate, AnimalId)
+VALUES ('5', '1', '003', CONVERT(datetime, '2019-01-30',102), CONVERT(datetime, '2020-09-26',102), '5')
+GO
+
+
+
+INSERT dbo.employee (EmployeeId, FirstName, LastName, PhoneNumber, Address, AdoptionId, DeliveryId)
+VALUES ('1', 'Anna', 'Zielińska', '662187903', 'Jasna nr 11, Kraków', '1', '1')
+GO 
+
+INSERT dbo.employee (EmployeeId, FirstName, LastName, PhoneNumber, Address, AdoptionId, DeliveryId)
+VALUES ('2', 'Kamil', 'Jankowski', '554329945', 'Srebrna nr 7, Kraków', '2', '2')
+GO
+
+INSERT dbo.employee (EmployeeId, FirstName, LastName, PhoneNumber, Address, AdoptionId, DeliveryId)
+VALUES ('3', 'Adam', 'Piotrowski', '211456309', 'Zielona nr 33, Kraków', '3', '3')
+GO
+
+INSERT dbo.employee (EmployeeId, FirstName, LastName, PhoneNumber, Address, AdoptionId, DeliveryId)
+VALUES ('4', 'Paulina', 'Mazur', '457892256', 'Złota nr 18, Kraków', '4', '4')
+GO
+
+INSERT dbo.employee (EmployeeId, FirstName, LastName, PhoneNumber, Address, AdoptionId, DeliveryId)
+VALUES ('5', 'Katarzyna', 'Kwiatkowska', '879388452', 'Ciemna nr 21, Kraków', '5', '5')
+GO
+
+
+
+INSERT dbo.employee_history (StartDate, EndDate, Job, Salary, WorkHours, EmployeeId)
+VALUES (CONVERT(datetime, '2018-12-10',102), null, 'pracownik schroniska', '2000', '8', '1')
+GO
+
+INSERT dbo.employee_history (StartDate, EndDate, Job, Salary, WorkHours, EmployeeId)
+VALUES (CONVERT(datetime, '2018-12-10',102), null, 'pracownik schroniska/magazyn', '1800', '6', '2')
+GO
+
+INSERT dbo.employee_history (StartDate, EndDate, Job, Salary, WorkHours, EmployeeId)
+VALUES (CONVERT(datetime, '2018-12-10',102), null, 'pracownik schroniska', '1200', '6', '3')
+GO
+
+INSERT dbo.employee_history (StartDate, EndDate, Job, Salary, WorkHours, EmployeeId)
+VALUES (CONVERT(datetime, '2019-01-06',102), null, 'pracownik schroniska', '2100', '8', '4')
+GO
+
+INSERT dbo.employee_history (StartDate, EndDate, Job, Salary, WorkHours, EmployeeId)
+VALUES (CONVERT(datetime, '2019-01-06',102), null, 'pracownik schroniska/magazyn', '2200', '8', '5')
+GO
+
+
+
+INSERT dbo.stock (StockId, SupplierId, EmployeeId, DateOfAdmission)
+VALUES ('1', '1', '2', CONVERT(datetime, '2020-01-01',102))
+GO
+
+INSERT dbo.stock (StockId, SupplierId, EmployeeId, DateOfAdmission)
+VALUES ('2', '2', '5', CONVERT(datetime, '2020-02-01',102))
+GO
+
+INSERT dbo.stock (StockId, SupplierId, EmployeeId, DateOfAdmission)
+VALUES ('3', '3', '2', CONVERT(datetime, '2020-03-01',102))
+GO
+
+INSERT dbo.stock (StockId, SupplierId, EmployeeId, DateOfAdmission)
+VALUES ('4', '4', '5', CONVERT(datetime, '2020-04-01',102))
+GO
+
+INSERT dbo.stock (StockId, SupplierId, EmployeeId, DateOfAdmission)
+VALUES ('5', '5', '2', CONVERT(datetime, '2020-05-01',102))
+GO
+
+
+
+INSERT dbo.employee_stock (EmployeeId, StockId)
+VALUES ('2', '1')
+GO
+
+INSERT dbo.employee_stock (EmployeeId, StockId)
+VALUES ('5', '2')
+GO
+
+INSERT dbo.employee_stock (EmployeeId, StockId)
+VALUES ('2', '3')
+GO
+
+INSERT dbo.employee_stock (EmployeeId, StockId)
+VALUES ('5', '4')
+GO
+
+INSERT dbo.employee_stock (EmployeeId, StockId)
+VALUES ('2', '5')
+GO
+
+
+
+INSERT dbo.suppliers (SupplierId, PhoneNumber, EmailAddress, StockId)
+VALUES ('1', '534692875', 'dostawca1@epoczta.pl', '1')
+GO
+
+INSERT dbo.suppliers (SupplierId, PhoneNumber, EmailAddress, StockId)
+VALUES ('2', '215644920', 'dostawca2@epoczta.pl', '2')
+GO
+
+INSERT dbo.suppliers (SupplierId, PhoneNumber, EmailAddress, StockId)
+VALUES ('3', '990324767', 'dostawca3@epoczta.pl', '3') 
+GO
+
+INSERT dbo.suppliers (SupplierId, PhoneNumber, EmailAddress, StockId)
+VALUES ('4', '749433201', 'dostawca4@epoczta.pl', '4')
+GO
+
+INSERT dbo.suppliers (SupplierId, PhoneNumber, EmailAddress, StockId)
+VALUES ('5', '667903475', 'dostawca5@epoczta.pl', '5')
+GO
+
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   10 X SELECT  
+--( PRZYKŁADY ROZBUDOWANYCH POLECEŃ Z JOIN NA MIN. 3 TABELACH, WARUNKAMI, GROUP BY , podzapytania, funkje ITP )
+-- POZIOM ZAAWANSOWANIA MA WPŁYW NA OCENĘ                                                   
+-- -------------------------------------------------------------------------------
+
+SELECT employee.FirstName, employee.LastName, employee.PhoneNumber,
+employee_history.Salary, employee_history.WorkHours,
+delivery.AnimalId
+FROM employee 
+JOIN employee_history
+ON employee.EmployeeId=employee_history.EmployeeId
+JOIN delivery
+ON employee_history.EmployeeId=delivery.EmployeeId
+ORDER BY Salary;
+GO
+
+SELECT animal.Name, animal.Sex, 
+delivery.DateOfAdmission, cage.CageCode
+FROM animal
+JOIN delivery
+ON animal.DeliveryId=delivery.DeliveryId
+JOIN cage
+ON delivery.AnimalId=cage.AnimalID
+AND animal.Sex LIKE 'samiec' 
+GROUP BY animal.Name, animal.Sex, delivery.DateOfAdmission, cage.CageCode
+ORDER BY cage.CageCode;
+GO
+
+SELECT UPPER(employee.LastName), employee.FirstName,
+UPPER(client.LastName), client.FirstName, 
+adoption.AdoptionId
+FROM employee, client, adoption
+WHERE client.ClientId=adoption.ClientId
+AND adoption.AdoptionId < 3;
+GO
+
+SELECT animal.Name, animal.Sex, animal.Age,
+adoption.EndDate, adoption.Payment,
+employee.EmployeeId
+FROM animal, adoption, employee
+WHERE adoption.AdoptionId=employee.AdoptionId
+AND adoption.AdoptionId=animal.AdoptionId
+AND animal.Name LIKE 'A%'
+ORDER BY animal.Age;
+GO
+
+SELECT UPPER(client.LastName), client.LastName,
+animal.Name, animal.Race,
+adoption.AdoptionId
+FROM client, animal, adoption
+WHERE adoption.AdoptionId=animal.AdoptionId
+ORDER BY adoption.AdoptionId;
+GO
+
+SELECT cage.CageCode,
+animal.Name, animal.DateOfAdmission,
+adoption.Payment, adoption.AdoptionId
+FROM animal
+JOIN cage
+ON animal.AnimalId=cage.AnimalID
+JOIN adoption
+ON adoption.AdoptionId=animal.AdoptionId
+ORDER BY adoption.AdoptionId;
+GO
+
+SELECT stock.StockId, suppliers.SupplierId, suppliers.PhoneNumber,
+employee.FirstName, employee.LastName
+FROM stock
+JOIN employee_stock
+ON employee_stock.StockId=stock.StockId
+JOIN suppliers
+ON stock.StockId=suppliers.StockId
+JOIN employee
+ON employee_stock.EmployeeId=employee.EmployeeId
+ORDER BY stock.StockId;
+GO
+
+SELECT animal.Name, animal.Sex, 
+delivery.DateOfAdmission,
+cage.CageCode, cage.BuildingId
+FROM animal 
+JOIN cage
+ON animal.AnimalId=cage.AnimalID
+JOIN delivery
+ON animal.DeliveryId=delivery.DeliveryId
+ORDER BY cage.BuildingId;
+GO
+
+SELECT employee.FirstName, employee.LastName,
+employee_history.Salary,
+adoption.AdoptionId
+FROM employee
+JOIN employee_history
+ON employee.EmployeeId=employee_history.EmployeeId
+JOIN adoption
+ON adoption.AdoptionId=employee.AdoptionId
+WHERE Salary < 2000;
+GO
+
+SELECT client.FirstName, client.LastName,
+animal.Name, animal.Race, animal.Sex,
+adoption.AdoptionId
+FROM client
+JOIN adoption
+ON client.ClientId=adoption.ClientId
+JOIN animal
+ON adoption.AdoptionId=animal.AdoptionId
+ORDER BY adoption.AdoptionId;
+GO
+
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   5 X UPDATE     (POLECENIA POWINNY WYKORZYSTYWAĆ PODZAPYTANIA, funkcje itp)      
+-- POZIOM ZAAWANSOWANIA MA WPŁYW NA OCENĘ                                               
+-- -------------------------------------------------------------------------------
+
+UPDATE employee_history
+SET WorkHours= '7'
+WHERE EmployeeId=(SELECT EmployeeId FROM employee WHERE FirstName LIKE 'Paulina' 
+AND LastName LIKE 'Mazur');
+GO
+
+UPDATE employee_history
+SET Salary= '1500'
+WHERE EmployeeId=(SELECT EmployeeId FROM employee WHERE FirstName LIKE 'Adam' 
+AND LastName LIKE 'Piotrowski');
+GO
+
+UPDATE suppliers
+SET PhoneNumber= '542776498'
+WHERE StockId=(SELECT StockId FROM stock WHERE EmployeeId= '2'
+AND DateOfAdmission='2020-03-01');
+GO
+
+UPDATE cage
+SET CageCode= '103'
+WHERE AnimalID=(SELECT AnimalId FROM animal WHERE Name= 'Aslan' 
+AND Age='3');
+GO
+
+UPDATE adoption
+SET Payment= '0'
+WHERE ClientId=(SELECT ClientId FROM client WHERE FirstName= 'Jan' 
+AND LastName='Kowalski');
+GO
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   5 X DELETE     (TEŻ Z PODZAPYTANIAMI itp)              
+-- POZIOM ZAAWANSOWANIA MA WPŁYW NA OCENĘ                                        
+-- -------------------------------------------------------------------------------
+
+DELETE FROM dbo.employee_history
+WHERE EmployeeId IN (SELECT TOP 2 EmployeeId  
+FROM dbo.employee  
+ORDER BY FirstName ASC);
+GO  
+
+DELETE FROM dbo.cage
+WHERE AnimalId IN (SELECT AnimalId FROM dbo.animal 
+WHERE NAME= 'Fifi' AND AGE='1');
+GO 
+
+DELETE FROM dbo.cage
+WHERE AnimalId IN (SELECT AnimalId FROM dbo.animal 
+WHERE Name LIKE 'A%' AND Age BETWEEN 2 AND 3);
+GO
+
+DELETE FROM dbo.suppliers
+WHERE StockId IN (SELECT StockID FROM dbo.stock WHERE EmployeeId= 2
+AND DateOfAdmission='2020-05-01');
+GO
+
+DELETE FROM dbo.employee_history
+WHERE EmployeeId IN (SELECT EmployeeId  
+FROM dbo.employee  
+WHERE LastName LIKE 'Mazur' OR LastName= 'Nowak');
+GO
+
+-- -------------------------------------------------------------------------------
+-- USUWANIE STRUKTURY BAZY DANYCH 
+-- NALEŻY USUNAĆ TABELE, A NIE BAZĘ                                           
+-- -------------------------------------------------------------------------------
+
+ALTER TABLE [cage] DROP CONSTRAINT [animal_cage]
+GO
+
+
+ALTER TABLE [adoption] DROP CONSTRAINT [client_adoption]
+GO
+
+
+ALTER TABLE [employee] DROP CONSTRAINT [adoption_employee]
+GO
+
+
+ALTER TABLE [employee] DROP CONSTRAINT [delivery_employee]
+GO
+
+
+ALTER TABLE [employee_history] DROP CONSTRAINT [employee_employee_history]
+GO
+
+
+ALTER TABLE [suppliers] DROP CONSTRAINT [stock_suppliers]
+GO
+
+
+ALTER TABLE [animal] DROP CONSTRAINT [adoption_animal]
+GO
+
+
+ALTER TABLE [animal] DROP CONSTRAINT [delivery_animal]
+GO
+
+
+ALTER TABLE [employee_stock] DROP CONSTRAINT [employee_employee_stock]
+GO
+
+
+ALTER TABLE [employee_stock] DROP CONSTRAINT [stock_employee_stock]
+GO
+
+
+ALTER TABLE [delivery_client] DROP CONSTRAINT [delivery_delivery_client]
+GO
+
+
+ALTER TABLE [delivery_client] DROP CONSTRAINT [client_delivery_client]
+GO
+
+
+
+
+ALTER TABLE [cage] DROP CONSTRAINT [PK_cage]
+GO
+
+
+DROP TABLE [cage]
+GO
+
+
+
+
+ALTER TABLE [employee_stock] DROP CONSTRAINT [PK_employee_stock]
+GO
+
+
+DROP TABLE [employee_stock]
+GO
+
+
+
+
+ALTER TABLE [animal] DROP CONSTRAINT [PK_animal]
+GO
+
+
+DROP TABLE [animal]
+GO
+
+
+
+
+DROP TABLE [employee_history]
+GO
+
+
+
+
+ALTER TABLE [employee] DROP CONSTRAINT [PK_employee]
+GO
+
+
+DROP TABLE [employee]
+GO
+
+
+
+
+ALTER TABLE [adoption] DROP CONSTRAINT [PK_adoption]
+GO
+
+
+DROP TABLE [adoption]
+GO
+
+
+
+
+ALTER TABLE [delivery_client] DROP CONSTRAINT [PK_delivery_client]
+GO
+
+
+DROP TABLE [delivery_client]
+GO
+
+
+
+
+ALTER TABLE [suppliers] DROP CONSTRAINT [PK_suppliers]
+GO
+
+
+DROP TABLE [suppliers]
+GO
+
+
+
+ALTER TABLE [stock] DROP CONSTRAINT [PK_stock]
+GO
+
+
+DROP TABLE [stock]
+GO
+
+
+
+
+ALTER TABLE [client] DROP CONSTRAINT [PK_client]
+GO
+
+
+DROP TABLE [client]
+GO
+
+
+
+
+ALTER TABLE [delivery] DROP CONSTRAINT [PK_delivery]
+GO
+
+
+DROP TABLE [delivery]
+GO
+

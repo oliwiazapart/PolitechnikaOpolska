@@ -1,0 +1,434 @@
+{
+	"info": {
+		"_postman_id": "a92b00bd-0a4a-4347-96e1-9f1f8267d4d1",
+		"name": "aventuras_v1_v2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://localhost:44316/api/v1/share/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44316/api/v1/share/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v1",
+						"share",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/share/2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44316/api/v2/share/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"share",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/user/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44316/api/v2/user/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/user/name/Alex",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44316/api/v2/user/name/Alex",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"user",
+						"name",
+						"Alex"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/rating/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44316/api/v2/rating/1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"rating",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v1/share",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"shareId\": 97,\r\n    \"postId\": 4,\r\n    \"userId\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44316/api/v1/share",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v1",
+						"share"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/share",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"shareId\": 98,\r\n    \"postId\": 8,\r\n    \"userId\": 8\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44316/api/v2/share",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"share"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"Name\":\"XYZ\",\r\n\"Email\":\"jakaspoczta@poczta.pl\",\r\n\"Gender\":0,\r\n\"BirthDate\":\"2000-10-10T00:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44316/api/v2/user",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/rating",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ratingId\": 11,\r\n    \"userId\": 11,\r\n    \"postId\": 4,\r\n    \"commentId\": 1,\r\n    \"numericRating\": 1,\r\n    \"usefulStatus\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44316/api/v2/rating",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"rating"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v1/share/edit/97",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"shareId\": 97,\r\n    \"postId\": 9,\r\n    \"userId\": 9\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44316/api/v1/share/edit/97",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v1",
+						"share",
+						"edit",
+						"97"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/share/edit/97",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"shareId\": 97,\r\n    \"postId\": 5,\r\n    \"userId\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44316/api/v2/share/edit/97",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"share",
+						"edit",
+						"97"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/user/edit/20",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"Name\":\"XXX\",\r\n\"Email\":\"XXX@poczta.pl\",\r\n\"Gender\":0,\r\n\"BirthDate\":\"2000-10-10T00:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44316/api/v2/user/edit/20",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"user",
+						"edit",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/rating/edit/11",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ratingId\": 11,\r\n    \"userId\": 10,\r\n    \"postId\": 7,\r\n    \"commentId\": 7,\r\n    \"numericRating\": 7,\r\n    \"usefulStatus\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44316/api/v2/rating/edit/11",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"rating",
+						"edit",
+						"11"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v1/share/97",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44316/api/v2/share/97",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"share",
+						"97"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/share/98",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44316/api/v2/share/98",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"share",
+						"98"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44316/api/v2/rating/11",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44316/api/v2/rating/11",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44316",
+					"path": [
+						"api",
+						"v2",
+						"rating",
+						"11"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

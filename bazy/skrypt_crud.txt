@@ -1,0 +1,501 @@
+-- *******************************************************************************
+-- *                                                                     
+-- *   GRUPA LABORATORYJNA: 8		               
+-- *                                 
+-- *******************************************************************************
+-- * 																		     
+-- *   Nazwisko i imię: Zapart Oliwia                                                          
+-- * 																		     
+-- *******************************************************************************
+-- * 																		     
+-- *   Nr indeksu: 99517                                                              
+-- * 																		     
+-- *******************************************************************************
+-- * 																		     
+-- *   Temat projektu: Schronisko dla zwierząt                                                              
+-- * 																		     
+-- *******************************************************************************
+
+-- PROSZĘ NIE UŻYWAĆ W SKRYPTACH ALIASÓW DLA SCHEMATÓW BAZ
+
+
+-- -------------------------------------------------------------------------------
+-- TWORZENIE STRUKTURY BAZY DANYCH  
+-- [PAMIĘTAĆ O KLUCZACH OBCYCH]                                          
+-- -------------------------------------------------------------------------------
+
+CREATE TABLE adoption (
+    adoption_id       NUMBER NOT NULL,
+    start_date        DATE NOT NULL,
+    end_date          DATE,
+    animal_id         NUMBER NOT NULL,
+    payment           CHAR(1) NOT NULL,
+    employee_id       NUMBER NOT NULL,
+    client_client_id  NUMBER NOT NULL
+);
+
+
+ALTER TABLE adoption ADD CONSTRAINT adoption_pk PRIMARY KEY ( adoption_id );
+
+CREATE TABLE animal (
+    id                    NUMBER NOT NULL,
+    race                  VARCHAR2(50) NOT NULL,
+    date_of_admission     DATE NOT NULL,
+    sex                   VARCHAR2(6) NOT NULL,
+    name                  VARCHAR2(50),
+    age                   NUMBER,
+    delivery_delivery_id  NUMBER NOT NULL,
+    adoption_adoption_id  NUMBER NOT NULL
+);
+
+
+CREATE UNIQUE INDEX animal__idx ON
+    animal (
+        delivery_delivery_id
+    ASC );
+
+CREATE UNIQUE INDEX animal__idxv1 ON
+    animal (
+        adoption_adoption_id
+    ASC );
+
+ALTER TABLE animal ADD CONSTRAINT animal_pk PRIMARY KEY ( id );
+
+CREATE TABLE cage (
+    cage_id      NUMBER NOT NULL,
+    building_id  NUMBER NOT NULL,
+    cage_code    NUMBER NOT NULL,
+    start_date   DATE,
+    end_date     DATE,
+    animal_id    NUMBER NOT NULL
+);
+
+
+CREATE UNIQUE INDEX cage__idx ON
+    cage (
+        animal_id
+    ASC );
+
+ALTER TABLE cage ADD CONSTRAINT cage_pk PRIMARY KEY ( cage_id );
+
+CREATE TABLE client (
+    client_id      NUMBER NOT NULL,
+    first_name     VARCHAR2(50) NOT NULL,
+    last_name      VARCHAR2(100) NOT NULL,
+    email_address  VARCHAR2(50) NOT NULL,
+    address        VARCHAR2(100) NOT NULL,
+    type           VARCHAR2(10) NOT NULL
+);
+
+
+ALTER TABLE client ADD CONSTRAINT client_pk PRIMARY KEY ( client_id );
+
+CREATE TABLE client_delivery_fk (
+    client_delivery_id  NUMBER NOT NULL,
+    client_client_id    NUMBER NOT NULL
+);
+
+
+ALTER TABLE client_delivery_fk ADD CONSTRAINT client_a_delivery_fk_pk PRIMARY KEY ( client_delivery_id,
+                                                                                    client_client_id );
+
+CREATE TABLE delivery (
+    delivery_id  NUMBER NOT NULL,
+    animal_id    NUMBER NOT NULL,
+    "date"       DATE NOT NULL,
+    employee_id  NUMBER NOT NULL
+);
+
+
+
+ALTER TABLE delivery ADD CONSTRAINT animal_delivery_pk PRIMARY KEY ( delivery_id );
+
+CREATE TABLE employee (
+    employee_id           NUMBER NOT NULL,
+    first_name            VARCHAR2(50) NOT NULL,
+    last_name             VARCHAR2(50) NOT NULL,
+    phone_number          NUMBER NOT NULL,
+    address               VARCHAR2(50) NOT NULL,
+    delivery_delivery_id  NUMBER,
+    adoption_adoption_id  NUMBER 
+);
+
+
+CREATE UNIQUE INDEX employee__idx ON
+    employee (
+        delivery_delivery_id
+    ASC );
+
+CREATE UNIQUE INDEX employee__idxv1 ON
+    employee (
+        adoption_adoption_id
+    ASC );
+
+ALTER TABLE employee ADD CONSTRAINT employee_pk PRIMARY KEY ( employee_id );
+
+CREATE TABLE employee_history (
+    start_date            DATE NOT NULL,
+    end_date              DATE,
+    job                   VARCHAR2(50) NOT NULL,
+    salary                NUMBER NOT NULL,
+    work_hours            NUMBER NOT NULL,
+    employee_employee_id  NUMBER NOT NULL
+);
+
+
+CREATE TABLE r_employee_stock (
+    employee_employee_id  NUMBER NOT NULL,
+    stock_stock_id        NUMBER NOT NULL
+);
+
+
+ALTER TABLE r_employee_stock ADD CONSTRAINT relation_3_pk PRIMARY KEY ( employee_employee_id,
+                                                                        stock_stock_id );
+
+CREATE TABLE stock (
+    stock_id           NUMBER NOT NULL,
+    supplier_id        NUMBER NOT NULL,
+    rec_employee_id    NUMBER NOT NULL,
+    date_of_admission  DATE NOT NULL
+);
+
+ALTER TABLE stock ADD CONSTRAINT stock_pk PRIMARY KEY ( stock_id );
+
+CREATE TABLE suppliers (
+    supplier_id       NUMBER NOT NULL,
+    phone_number      NUMBER NOT NULL,
+    email_address     VARCHAR2(50) NOT NULL,
+    stock_stock_id    NUMBER NOT NULL
+);
+
+
+ALTER TABLE suppliers ADD CONSTRAINT suppliers_pk PRIMARY KEY ( supplier_id );
+
+ALTER TABLE adoption
+    ADD CONSTRAINT adoption_client_fk FOREIGN KEY ( client_client_id )
+        REFERENCES client ( client_id );
+
+ALTER TABLE animal
+    ADD CONSTRAINT animal_adoption_fk FOREIGN KEY ( adoption_adoption_id )
+        REFERENCES adoption ( adoption_id );
+
+ALTER TABLE animal
+    ADD CONSTRAINT animal_delivery_fk FOREIGN KEY ( delivery_delivery_id )
+        REFERENCES delivery ( delivery_id );
+
+ALTER TABLE cage
+    ADD CONSTRAINT cage_animal_fk FOREIGN KEY ( animal_id )
+        REFERENCES animal ( id );
+
+ALTER TABLE client_delivery_fk
+    ADD CONSTRAINT client_a_delivery_fk_client_fk FOREIGN KEY ( client_client_id )
+        REFERENCES client ( client_id );
+
+ALTER TABLE client_delivery_fk
+    ADD CONSTRAINT client_a_delivery_fk1 FOREIGN KEY ( client_delivery_id )
+        REFERENCES delivery ( delivery_id );
+
+ALTER TABLE employee
+    ADD CONSTRAINT employee_adoption_fk FOREIGN KEY ( adoption_adoption_id )
+        REFERENCES adoption ( adoption_id );
+
+ALTER TABLE employee
+    ADD CONSTRAINT employee_delivery_fk FOREIGN KEY ( delivery_delivery_id )
+        REFERENCES delivery ( delivery_id );
+
+ALTER TABLE employee_history
+    ADD CONSTRAINT employee_history_employee_fk FOREIGN KEY ( employee_employee_id )
+        REFERENCES employee ( employee_id );
+
+ALTER TABLE r_employee_stock
+    ADD CONSTRAINT relation_3_employee_fk FOREIGN KEY ( employee_employee_id )
+        REFERENCES employee ( employee_id );
+
+ALTER TABLE r_employee_stock
+    ADD CONSTRAINT relation_3_stock_fk FOREIGN KEY ( stock_stock_id )
+        REFERENCES stock ( stock_id );
+
+ALTER TABLE suppliers
+    ADD CONSTRAINT suppliers_stock_fk FOREIGN KEY ( stock_stock_id )
+        REFERENCES stock ( stock_id );
+
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   5 X INSERT  DO WSZYSTKICH TABEL                                               
+-- -------------------------------------------------------------------------------
+
+INSERT INTO client (client_id, first_name, last_name, email_address, address, type)
+VALUES ('1', 'Jan', 'Kowalski', 'jankowalski@epoczta.pl', 'Morska nr 14, Kraków', 'adopcja');
+INSERT INTO client (client_id, first_name, last_name, email_address, address, type)
+VALUES ('2', 'Ola', 'Nowak', 'olanowak@epoczta.pl', 'Zielona nr 9, Kraków', 'adopcja');
+INSERT INTO client (client_id, first_name, last_name, email_address, address, type)
+VALUES ('3', 'Kuba', 'Kowalczyk', 'kubakowalczyk@epoczta.pl', 'Fioletowa nr 18, Kraków', 'dostawa');
+INSERT INTO client (client_id, first_name, last_name, email_address, address, type)
+VALUES ('4', 'Monika', 'Wiśniewska', 'monikawisniewska@epoczta.pl', 'Kolorowa nr 12, Kraków', 'dostawa');
+INSERT INTO client (client_id, first_name, last_name, email_address, address, type)
+VALUES ('5', 'Andrzej', 'Kamiński', 'andrzejkaminski@epoczta.pl', 'Czerwona nr 10, Kraków', 'dostawa');
+
+INSERT INTO adoption (adoption_id, start_date, end_date, animal_id, payment, employee_id,client_client_id )
+VALUES ('1', to_date('20/10/10','RR/MM/DD'), to_date('20/10/20','RR/MM/DD'), '1', 'T', '1', '1');
+INSERT INTO adoption (adoption_id, start_date, end_date, animal_id, payment, employee_id,client_client_id )
+VALUES ('2', to_date('20/11/22','RR/MM/DD'), to_date('20/11/30','RR/MM/DD'), '2', 'T', '5', '2');
+INSERT INTO adoption (adoption_id, start_date, end_date, animal_id, payment, employee_id,client_client_id )
+VALUES ('3', to_date('20/06/01','RR/MM/DD'), to_date('20/06/10','RR/MM/DD'), '3', 'T', '2', '1');
+INSERT INTO adoption (adoption_id, start_date, end_date, animal_id, payment, employee_id,client_client_id )
+VALUES ('4', to_date('20/12/12','RR/MM/DD'), to_date('20/12/22','RR/MM/DD'), '4', 'T', '3', '2');
+INSERT INTO adoption (adoption_id, start_date, end_date, animal_id, payment, employee_id,client_client_id )
+VALUES ('5', to_date('20/09/16','RR/MM/DD'), to_date('20/09/26','RR/MM/DD'), '5', 'T', '4', '1');
+
+INSERT INTO delivery (delivery_id, animal_id, "date", employee_id) 
+VALUES ('1', '1', to_date('19/11/16','RR/MM/DD'), '1');
+INSERT INTO delivery (delivery_id, animal_id, "date", employee_id) 
+VALUES ('2', '2', to_date('19/05/12','RR/MM/DD'), '2');
+INSERT INTO delivery (delivery_id, animal_id, "date", employee_id) 
+VALUES ('3', '3', to_date('19/12/02','RR/MM/DD'), '2');
+INSERT INTO delivery (delivery_id, animal_id, "date", employee_id) 
+VALUES ('4', '4', to_date('19/03/24','RR/MM/DD'), '3');
+INSERT INTO delivery (delivery_id, animal_id, "date", employee_id) 
+VALUES ('5', '5', to_date('19/01/30','RR/MM/DD'), '4');
+
+INSERT INTO client_delivery_fk (client_delivery_id, client_client_id)
+VALUES ('1', '3');
+INSERT INTO client_delivery_fk (client_delivery_id, client_client_id)
+VALUES ('2', '4');
+INSERT INTO client_delivery_fk (client_delivery_id, client_client_id)
+VALUES ('3', '5');
+INSERT INTO client_delivery_fk (client_delivery_id, client_client_id)
+VALUES ('4', '4');
+INSERT INTO client_delivery_fk (client_delivery_id, client_client_id)
+VALUES ('5', '3');
+
+INSERT INTO animal (id, race, date_of_admission, sex, name, age, delivery_delivery_id, adoption_adoption_id)
+VALUES ('1', 'pies', to_date('19/11/16','RR/MM/DD'), 'samiec', 'Azor', '2', '1', '1');
+INSERT INTO animal (id, race, date_of_admission, sex, name, age, delivery_delivery_id, adoption_adoption_id)
+VALUES ('2', 'kot', to_date('19/05/12','RR/MM/DD'), 'samica', 'Fifi', '1', '2', '2');
+INSERT INTO animal (id, race, date_of_admission, sex, name, age, delivery_delivery_id, adoption_adoption_id)
+VALUES ('3', 'pies', to_date('19/12/02','RR/MM/DD'), 'samiec', 'Pulpet', '2', '3', '3');
+INSERT INTO animal (id, race, date_of_admission, sex, name, age, delivery_delivery_id, adoption_adoption_id)
+VALUES ('4', 'kot', to_date('19/03/24','RR/MM/DD'), 'samiec', 'Aslan', '3', '4', '4');
+INSERT INTO animal (id, race, date_of_admission, sex, name, age, delivery_delivery_id, adoption_adoption_id)
+VALUES ('5', 'pies', to_date('19/01/30','RR/MM/DD'), 'samica', 'Lola', '4', '5', '5');
+
+
+INSERT INTO cage (cage_id, building_id, cage_code, start_date, end_date, animal_id)
+VALUES ('1', '1', '001', to_date('19/11/16','RR/MM/DD'), to_date('20/10/20','RR/MM/DD'), '1');
+INSERT INTO cage (cage_id, building_id, cage_code, start_date, end_date, animal_id)
+VALUES ('2', '2', '101', to_date('19/05/12','RR/MM/DD'), to_date('20/11/30','RR/MM/DD'), '2');
+INSERT INTO cage (cage_id, building_id, cage_code, start_date, end_date, animal_id)
+VALUES ('3', '1', '002', to_date('19/12/02','RR/MM/DD'), to_date('20/06/10','RR/MM/DD'), '3');
+INSERT INTO cage (cage_id, building_id, cage_code, start_date, end_date, animal_id)
+VALUES ('4', '2', '102', to_date('19/03/24','RR/MM/DD'), to_date('20/12/22','RR/MM/DD'), '4');
+INSERT INTO cage (cage_id, building_id, cage_code, start_date, end_date, animal_id)
+VALUES ('5', '1', '003', to_date('19/01/30','RR/MM/DD'), to_date('20/09/26','RR/MM/DD'), '5');
+
+INSERT INTO  employee (employee_id, first_name, last_name, phone_number, address, delivery_delivery_id, adoption_adoption_id)
+VALUES ('1', 'Anna', 'Zielińska', '662187903', 'Jasna nr 11, Kraków', '1', '1');
+INSERT INTO  employee (employee_id, first_name, last_name, phone_number, address, delivery_delivery_id, adoption_adoption_id)
+VALUES ('2', 'Kamil', 'Jankowski', '554329945', 'Srebrna nr 7, Kraków', '2', '2');
+INSERT INTO  employee (employee_id, first_name, last_name, phone_number, address, delivery_delivery_id, adoption_adoption_id)
+VALUES ('3', 'Adam', 'Piotrowski', '211456309', 'Zielona nr 33, Kraków', '3', '3');
+INSERT INTO  employee (employee_id, first_name, last_name, phone_number, address, delivery_delivery_id, adoption_adoption_id)
+VALUES ('4', 'Paulina', 'Mazur', '457892256', 'Złota nr 18, Kraków', '4', '4');
+INSERT INTO  employee (employee_id, first_name, last_name, phone_number, address, delivery_delivery_id, adoption_adoption_id)
+VALUES ('5', 'Katarzyna', 'Kwiatkowska', '879388452', 'Ciemna nr 21, Kraków', '5', '5');
+
+INSERT INTO employee_history (start_date, end_date, job, salary, work_hours, employee_employee_id)
+VALUES (to_date('18/12/10','RR/MM/DD'), null, 'pracownik schroniska', '2000', '8', '1');
+INSERT INTO employee_history (start_date, end_date, job, salary, work_hours, employee_employee_id)
+VALUES (to_date('18/12/10','RR/MM/DD'), null, 'pracownik schroniska/magazyn', '1800', '6', '2');
+INSERT INTO employee_history (start_date, end_date, job, salary, work_hours, employee_employee_id)
+VALUES (to_date('18/12/10','RR/MM/DD'), null, 'pracownik schroniska', '1200', '6', '3');
+INSERT INTO employee_history (start_date, end_date, job, salary, work_hours, employee_employee_id)
+VALUES (to_date('19/01/06','RR/MM/DD'), null, 'pracownik schroniska', '2100', '8', '4');
+INSERT INTO employee_history (start_date, end_date, job, salary, work_hours, employee_employee_id)
+VALUES (to_date('19/01/06','RR/MM/DD'), null, 'pracownik schroniska/magazyn', '2200', '8', '5');
+
+INSERT INTO stock (stock_id, supplier_id, rec_employee_id, date_of_admission)
+VALUES ('1', '1', '2', to_date('20/01/01','RR/MM/DD'));
+INSERT INTO stock (stock_id, supplier_id,rec_employee_id,date_of_admission)
+VALUES ('2', '2', '5', to_date('20/02/01','RR/MM/DD'));
+INSERT INTO stock (stock_id, supplier_id,rec_employee_id,date_of_admission)
+VALUES ('3', '3', '2', to_date('20/03/01','RR/MM/DD'));
+INSERT INTO stock (stock_id, supplier_id,rec_employee_id,date_of_admission)
+VALUES ('4', '4', '5', to_date('20/04/01','RR/MM/DD'));
+INSERT INTO stock (stock_id, supplier_id,rec_employee_id,date_of_admission)
+VALUES ('5', '5', '2', to_date('20/05/01','RR/MM/DD'));
+
+INSERT INTO r_employee_stock (employee_employee_id, stock_stock_id)
+VALUES ('2', '1');
+INSERT INTO r_employee_stock (employee_employee_id, stock_stock_id)
+VALUES ('5', '2');
+INSERT INTO r_employee_stock (employee_employee_id, stock_stock_id)
+VALUES ('2', '3');
+INSERT INTO r_employee_stock (employee_employee_id, stock_stock_id)
+VALUES ('5', '4');
+INSERT INTO r_employee_stock (employee_employee_id, stock_stock_id)
+VALUES ('2', '5');
+
+INSERT INTO suppliers (supplier_id, phone_number, email_address, stock_stock_id)
+VALUES ('1', '534692875', 'dostawca1@epoczta.pl', '1');
+INSERT INTO suppliers (supplier_id, phone_number, email_address, stock_stock_id)
+VALUES ('2', '215644920', 'dostawca2@epoczta.pl', '2');
+INSERT INTO suppliers (supplier_id, phone_number, email_address, stock_stock_id)
+VALUES ('3', '990324767', 'dostawca3@epoczta.pl', '3');
+INSERT INTO suppliers (supplier_id, phone_number, email_address, stock_stock_id)
+VALUES ('4', '749433201', 'dostawca4@epoczta.pl', '4');
+INSERT INTO suppliers (supplier_id, phone_number, email_address, stock_stock_id)
+VALUES ('5', '667903475', 'dostawca5@epoczta.pl', '5');
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   10 X SELECT  
+--( PRZYKŁADY ROZBUDOWANYCH POLECEŃ Z JOIN NA MIN. 3 TABELACH, WARUNKAMI, GROUP BY , podzapytania, funkje ITP )
+-- POZIOM ZAAWANSOWANIA MA WPŁYW NA OCENĘ                                                   
+-- -------------------------------------------------------------------------------
+
+SELECT EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME, EMPLOYEE.PHONE_NUMBER,
+EMPLOYEE_HISTORY.SALARY, EMPLOYEE_HISTORY.WORK_HOURS,
+DELIVERY.DELIVERY_ID, DELIVERY.ANIMAL_ID 
+FROM EMPLOYEE NATURAL JOIN EMPLOYEE_HISTORY NATURAL JOIN DELIVERY 
+WHERE EMPLOYEE_ID= EMPLOYEE_EMPLOYEE_ID
+ORDER BY SALARY;
+
+SELECT ANIMAL.NAME, ANIMAL.SEX, 
+DELIVERY."date",
+CAGE.CAGE_CODE 
+FROM ANIMAL NATURAL JOIN DELIVERY NATURAL JOIN CAGE 
+WHERE ANIMAL.DELIVERY_DELIVERY_ID = DELIVERY.DELIVERY_ID
+AND ANIMAL.SEX LIKE 'samiec' ORDER BY CAGE.CAGE_CODE;
+
+SELECT E.FIRST_NAME, E.LAST_NAME,
+C.FIRST_NAME, C.LAST_NAME,
+A.ADOPTION_ID 
+FROM CLIENT C, EMPLOYEE E, ADOPTION A
+WHERE A.CLIENT_CLIENT_ID= C.CLIENT_ID
+AND A.ADOPTION_ID < 3;
+
+SELECT A.NAME, A.SEX, A.AGE,
+D.END_DATE, D.PAYMENT,
+E.EMPLOYEE_ID 
+FROM ANIMAL A, ADOPTION D, EMPLOYEE E 
+WHERE D.ADOPTION_ID= E.ADOPTION_ADOPTION_ID
+AND D.ADOPTION_ID= A.ADOPTION_ADOPTION_ID
+AND A.NAME LIKE 'A%'
+ORDER BY A.AGE;
+
+SELECT C.FIRST_NAME, C.LAST_NAME,
+A.NAME, A.RACE,
+D.ADOPTION_ID
+FROM CLIENT C NATURAL JOIN ADOPTION D NATURAL JOIN ANIMAL A
+WHERE D.ADOPTION_ID= A.ADOPTION_ADOPTION_ID
+ORDER BY D.ADOPTION_ID;
+
+SELECT CAGE.CAGE_CODE, 
+ANIMAL.DATE_OF_ADMISSION, ANIMAL.NAME, 
+ADOPTION.PAYMENT, ADOPTION.ADOPTION_ID
+FROM ANIMAL JOIN CAGE
+ON ANIMAL_ID=ID
+JOIN ADOPTION
+ON ADOPTION_ID = ADOPTION_ADOPTION_ID
+ORDER BY ADOPTION.ADOPTION_ID;
+
+SELECT S.STOCK_ID, P.SUPPLIER_ID, P.PHONE_NUMBER,
+E.FIRST_NAME, E.LAST_NAME
+FROM STOCK S, SUPPLIERS P, R_EMPLOYEE_STOCK R, EMPLOYEE E
+WHERE E.EMPLOYEE_ID = R.EMPLOYEE_EMPLOYEE_ID
+AND R.STOCK_STOCK_ID = S.STOCK_ID
+ORDER BY S.STOCK_ID;
+
+SELECT ANIMAL.NAME, ANIMAL.SEX, DELIVERY."date",
+CAGE.CAGE_CODE, CAGE.BUILDING_ID
+FROM ANIMAL NATURAL JOIN DELIVERY NATURAL JOIN CAGE 
+WHERE ANIMAL.DELIVERY_DELIVERY_ID = DELIVERY.DELIVERY_ID
+ORDER BY CAGE.BUILDING_ID;
+
+SELECT EMPLOYEE.FIRST_NAME, EMPLOYEE.LAST_NAME, 
+EMPLOYEE_HISTORY.SALARY, 
+ADOPTION.ADOPTION_ID
+FROM EMPLOYEE JOIN EMPLOYEE_HISTORY 
+ON EMPLOYEE_ID = EMPLOYEE_EMPLOYEE_ID
+JOIN ADOPTION
+ON ADOPTION_ID = ADOPTION_ADOPTION_ID
+WHERE SALARY < 2000;
+
+SELECT CLIENT.FIRST_NAME, CLIENT.LAST_NAME,
+ANIMAL.NAME, ANIMAL.RACE, ANIMAL.SEX,
+ADOPTION.ADOPTION_ID 
+FROM CLIENT JOIN ADOPTION 
+ON CLIENT_ID = CLIENT_CLIENT_ID
+JOIN ANIMAL 
+ON ADOPTION_ADOPTION_ID = ADOPTION_ID
+ORDER BY ADOPTION.ADOPTION_ID;
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   5 X UPDATE     (POLECENIA POWINNY WYKORZYSTYWAĆ PODZAPYTANIA, funkcje itp)      
+-- POZIOM ZAAWANSOWANIA MA WPŁYW NA OCENĘ                                               
+-- -------------------------------------------------------------------------------
+
+UPDATE EMPLOYEE_HISTORY
+SET WORK_HOURS= '7'
+WHERE EMPLOYEE_EMPLOYEE_ID=(SELECT EMPLOYEE_ID FROM EMPLOYEE WHERE FIRST_NAME LIKE 'Paulina' 
+AND LAST_NAME LIKE 'Mazur');
+
+UPDATE EMPLOYEE_HISTORY
+SET SALARY= '1500'
+WHERE EMPLOYEE_EMPLOYEE_ID=(SELECT EMPLOYEE_ID FROM EMPLOYEE WHERE FIRST_NAME LIKE 'Adam' 
+AND LAST_NAME LIKE 'Piotrowski');
+
+UPDATE SUPPLIERS
+SET PHONE_NUMBER= '542776498'
+WHERE STOCK_STOCK_ID=(SELECT STOCK_ID FROM STOCK WHERE REC_EMPLOYEE_ID= '2'
+AND DATE_OF_ADMISSION='20/03/01');
+
+UPDATE CAGE
+SET CAGE_CODE= '103'
+WHERE ANIMAL_ID=(SELECT ID FROM ANIMAL WHERE NAME= 'Aslan' 
+AND AGE='3');
+
+UPDATE ADOPTION
+SET PAYMENT= 'N'
+WHERE CLIENT_CLIENT_ID=(SELECT CLIENT_ID FROM CLIENT WHERE FIRST_NAME= 'Jan' 
+AND LAST_NAME='Kowalski');
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   5 X DELETE     (TEŻ Z PODZAPYTANIAMI itp)              
+-- POZIOM ZAAWANSOWANIA MA WPŁYW NA OCENĘ                                        
+-- -------------------------------------------------------------------------------
+DELETE CAGE
+WHERE ANIMAL_ID IN (SELECT ID FROM ANIMAL WHERE NAME= 'Fifi' 
+AND AGE='1');
+
+DELETE CAGE
+WHERE ANIMAL_ID IN (SELECT ID FROM ANIMAL WHERE NAME LIKE 'A%' 
+AND AGE BETWEEN 2 AND 3);
+
+DELETE FROM SUPPLIERS
+WHERE STOCK_STOCK_ID=(SELECT STOCK_ID FROM STOCK WHERE REC_EMPLOYEE_ID= 2
+AND DATE_OF_ADMISSION='20/05/01');
+
+DELETE FROM EMPLOYEE_HISTORY
+WHERE EMPLOYEE_EMPLOYEE_ID=(SELECT EMPLOYEE_ID FROM EMPLOYEE 
+WHERE DELIVERY_DELIVERY_ID=1 AND ADOPTION_ADOPTION_ID= 1);
+
+DELETE FROM EMPLOYEE_HISTORY
+WHERE EMPLOYEE_EMPLOYEE_ID=(SELECT EMPLOYEE_ID FROM EMPLOYEE 
+WHERE LAST_NAME LIKE 'Mazur' OR LAST_NAME= 'Nowak');
+
+-- -------------------------------------------------------------------------------
+-- USUWANIE STRUKTURY BAZY DANYCH 
+-- NALEŻY USUNAĆ TABELE, A NIE BAZĘ                                           
+-- -------------------------------------------------------------------------------
+
+DROP TABLE client CASCADE CONSTRAINTS;
+DROP TABLE adoption CASCADE CONSTRAINTS;
+DROP TABLE delivery CASCADE CONSTRAINTS;
+DROP TABLE client_delivery_fk CASCADE CONSTRAINTS;
+DROP TABLE animal CASCADE CONSTRAINTS;
+DROP TABLE cage CASCADE CONSTRAINTS;
+DROP TABLE employee CASCADE CONSTRAINTS;
+DROP TABLE employee_history CASCADE CONSTRAINTS;
+DROP TABLE stock CASCADE CONSTRAINTS;
+DROP TABLE r_employee_stock CASCADE CONSTRAINTS;
+DROP TABLE suppliers CASCADE CONSTRAINTS;
